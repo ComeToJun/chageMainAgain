@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Result | How Magnificent You Are</title>
+    </head>
+    <body>
+        <img src="{{ url_for('static', filename=input_image_dir) }}" width="256" height="256">
+        <img src="{{ url_for('static', filename=output_image_dir) }}" width="256" height="256">
+        <video width="256" controls>
+            <source src="{{ url_for('static', filename=output_video_dir) }}" type="video/mp4">
+        </video>
+    </body>
+</html>
