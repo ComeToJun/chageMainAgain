@@ -12,13 +12,13 @@ import * as Sharing from 'expo-sharing';
 import SwitchCameraBtn from './Buttons/MainScreenBtns/SwitchCameraBtn';
 import TakePothoBtn from './Buttons/MainScreenBtns/TakePhotoBtn';
 import GetPhotoBtn from './Buttons/MainScreenBtns/GetPhotoBtn';
-import FaceLine from './Screen/onePerson/FaceLine';
+import FaceLine from './Screen/FaceLine';
 import SaveBtn from './Buttons/MainScreenBtns/SaveShareCancel/SaveBtn';
 import ShareBtn from './Buttons/MainScreenBtns/SaveShareCancel/ShareBtn';
 import Cancel from './Buttons/MainScreenBtns/TransferCancelBtn/CancelBtn';
 import TransferBtn from './Buttons/MainScreenBtns/TransferCancelBtn/TransferBtn';
 import { imageTransfer } from './api';
-import AfterSaveBtn from './Buttons/MainScreenBtns/SaveShareCancel/AfterSaveBtn';
+import ProgressBar from './Screen/progressBar';
 
 let currentPhoto = ''; // 찍은 사진 저장용
 let photos = []; // 모델 계산후 얻은 [원본, 결과] 사진 리스트 저장용
@@ -47,6 +47,7 @@ export default function App() {
   const [isAfterview, setIsAfterview] = useState(false);
   const [imageSelected, setImageSelected] = useState(false);
   const [imageComeback, setImageComeback] = useState(false);
+  const [progressBar, setProgressBar] = useState(false);
   const cameraRef = useRef();
 
   useEffect(() => {
@@ -81,6 +82,7 @@ export default function App() {
         if (source) {
           await cameraRef.current.pausePreview();
           setIsPreview(true);
+          setProgressBar(false);
         }
         const base64Photo = photo.base64;
         currentPhoto = base64Photo; // 여기서 나오는 return 값은 [원본사진, 합성후 사진]
@@ -105,6 +107,7 @@ export default function App() {
       setImage(photo.uri);
       setImageSelected(true);
       setImageComeback(true);
+      setProgressBar(false);
     }
     currentPhoto = photo.base64;
   };
@@ -118,6 +121,7 @@ export default function App() {
       setIsAfterview(true);
       setImageSelected(false);
       setImageComeback(false);
+      setProgressBar(false);
     } catch (error) {
       console.log(`getTransferImage Error: ${error}`);
     }
@@ -129,6 +133,7 @@ export default function App() {
     setImageSelected(false);
     setImageComeback(false);
     setIsAfterview(false);
+    setProgressBar(false);
   };
 
   savePhoto = async (uri) => {
@@ -144,6 +149,7 @@ export default function App() {
         }
       } else {
         setHasPermission(false);
+        setProgressBar(false);
       }
     } catch (error) {
       console.log(`savePhotoError: ${error}`);
@@ -160,6 +166,7 @@ export default function App() {
       });
       await MediaLibrary.saveToLibraryAsync(filename);
       setIsAfterview(false);
+      setProgressBar(false);
     } catch (error) {
       console.log(error);
     }
@@ -176,6 +183,7 @@ export default function App() {
 
       await Sharing.shareAsync(filename);
       setIsAfterview(false);
+      setProgressBar(false);
     } catch (error) {
       console.log(error);
     }
@@ -196,7 +204,7 @@ export default function App() {
         >
           <FaceLine />
         </Camera>
-        {imageSelected && imageComeback && (
+        {imageSelected && imageComeback && !progressBar && (
           <Image
             style={{
               width: width - 1,
@@ -207,7 +215,8 @@ export default function App() {
             source={{ uri: image }}
           />
         )}
-        {isAfterview && (
+
+        {isAfterview && !progressBar && (
           <Image
             style={{
               width: width - 1,
@@ -218,17 +227,21 @@ export default function App() {
             source={{ uri: photos[1] }}
           />
         )}
-        {!isPreview && !imageComeback && !isAfterview && !imageSelected && (
-          <IconContainer>
-            <GetPhotoBtn onPress={getPhotos} />
-            <TakePothoBtn onPress={takePhoto} />
-            <SwitchCameraBtn onPress={switchCameraType} />
-          </IconContainer>
-        )}
-        {isAfterview && !isPreview && (
-          <IconContainer>
-            <SaveBtn onPress={saveResultPhoto}></SaveBtn>
 
+        {!isPreview &&
+          !imageComeback &&
+          !isAfterview &&
+          !imageSelected &&
+          !progressBar && (
+            <IconContainer>
+              <GetPhotoBtn onPress={getPhotos} />
+              <TakePothoBtn onPress={takePhoto} />
+              <SwitchCameraBtn onPress={switchCameraType} />
+            </IconContainer>
+          )}
+        {isAfterview && !isPreview && !progressBar && (
+          <IconContainer>
+            <SaveBtn onPress={saveResultPhoto} />
             <ShareBtn onPress={openShareDialog} />
             <Cancel onPress={cancelPreviewBtn} />
           </IconContainer>
@@ -237,6 +250,7 @@ export default function App() {
           <TransferBtn onPress={getTransferImage} />
           <Cancel onPress={cancelPreviewBtn} />
         </IconContainer>
+        {progressBar && <ProgressBar />}
       </CenterView>
     );
   } else if (hasPermission === false) {
