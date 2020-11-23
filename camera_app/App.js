@@ -18,7 +18,7 @@ import ShareBtn from './Buttons/MainScreenBtns/SaveShareCancel/ShareBtn';
 import Cancel from './Buttons/MainScreenBtns/TransferCancelBtn/CancelBtn';
 import TransferBtn from './Buttons/MainScreenBtns/TransferCancelBtn/TransferBtn';
 import { imageTransfer } from './api';
-// import getPhotos from './Getphotos';
+import AfterSaveBtn from './Buttons/MainScreenBtns/SaveShareCancel/AfterSaveBtn';
 
 let currentPhoto = ''; // 찍은 사진 저장용
 let photos = []; // 모델 계산후 얻은 [원본, 결과] 사진 리스트 저장용
@@ -227,7 +227,8 @@ export default function App() {
         )}
         {isAfterview && !isPreview && (
           <IconContainer>
-            <SaveBtn onPress={saveResultPhoto} />
+            <SaveBtn onPress={saveResultPhoto}></SaveBtn>
+
             <ShareBtn onPress={openShareDialog} />
             <Cancel onPress={cancelPreviewBtn} />
           </IconContainer>
