@@ -23,7 +23,7 @@ import SaveBtn from './Buttons/MainScreenBtns/SaveShareCancel/SaveBtn';
 import ShareBtn from './Buttons/MainScreenBtns/SaveShareCancel/ShareBtn';
 import Cancel from './Buttons/MainScreenBtns/TransferCancelBtn/CancelBtn';
 import TransferBtn from './Buttons/MainScreenBtns/TransferCancelBtn/TransferBtn';
-import { imageTransfer, checkError } from './api';
+import { imageTransfer } from './api';
 import ProgressBar from './Screen/progressBar';
 
 let currentPhoto = ''; // 찍은 사진 저장용
@@ -54,7 +54,6 @@ export default function App() {
   const [imageSelected, setImageSelected] = useState(false);
   const [imageComeback, setImageComeback] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
 
   const cameraRef = useRef();
 
@@ -125,7 +124,7 @@ export default function App() {
       setIsLoading(false);
 
       await cameraRef.current.resumePreview();
-      console.log(photos);
+
       if (!photos) {
         setIsAfterview(false);
       } else {

@@ -25,8 +25,8 @@
     "react-dom": "17.0.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.4.tar.gz",
     "react-native-document-picker": "^4.1.0",
-    "react-native-gesture-handler": "^1.8.0",
-    "react-native-screens": "^2.15.0",
+    "react-native-gesture-handler": "^1.7.0",
+    "react-native-screens": "^2.10.1",
     "react-native-video": "^5.1.0-alpha8",
     "react-native-web": "~0.14.8",
     "styled-components": "^5.2.1"

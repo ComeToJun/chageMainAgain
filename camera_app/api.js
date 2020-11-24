@@ -5,7 +5,6 @@ import { Alert } from 'react-native';
 const URL = 'http://222.106.22.97:45055/let_me_shine';
 
 let tempResult = [];
-export let error = true;
 
 const getResults = (imgObj) => {
   console.log('[3] Image Transfer Start!');
@@ -52,14 +51,18 @@ export const imageTransfer = async (photo) => {
       // 이를 getResultURL 함수로 보낸다.
       .catch((err) => {
         console.log(`Post axios error: ${err}`);
-        Alert.alert(`Error is occured! Please try again!`);
+        error = false;
+        Alert.alert(
+          '사람을 찍어주세요🤣',
+          '만약 사람이라면 눈을 조금만 더 크게 떠주세요😘'
+        );
       });
     console.log('[1] Post End!');
   } catch (e) {
     console.log(`imageTransfer Error: ${e}`);
   } finally {
     const result = tempResult;
-    if (!result) {
+    if (result.length === 2) {
       return result;
     } else {
       return false;
