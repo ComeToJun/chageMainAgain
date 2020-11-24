@@ -1,8 +1,11 @@
 import axios from 'axios';
+import { useState } from 'react';
+import { Alert } from 'react-native';
 
 const URL = 'http://222.106.22.97:45055/let_me_shine';
 
 let tempResult = [];
+export let error = true;
 
 const getResults = (imgObj) => {
   console.log('[3] Image Transfer Start!');
@@ -47,13 +50,19 @@ export const imageTransfer = async (photo) => {
       .then((res) => getResultURL(res.data))
       // POST의 결과(res)로부터 모델 결과 위치(res.data) 얻음
       // 이를 getResultURL 함수로 보낸다.
-      .catch((err) => console.log(`Post axios error: ${err}`));
-
+      .catch((err) => {
+        console.log(`Post axios error: ${err}`);
+        Alert.alert(`Error is occured! Please try again!`);
+      });
     console.log('[1] Post End!');
   } catch (e) {
     console.log(`imageTransfer Error: ${e}`);
   } finally {
     const result = tempResult;
-    return result;
+    if (!result) {
+      return result;
+    } else {
+      return false;
+    }
   }
 };

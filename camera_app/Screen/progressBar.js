@@ -51,7 +51,7 @@ const Progress = ({ step, steps, height }) => {
             width: '100%',
             borderRadius: height,
             backgroundColor: 'lightgray',
-            position: 'absolute',
+
             left: 0,
             top: 0,
             transform: [
