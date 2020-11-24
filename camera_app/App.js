@@ -1,7 +1,13 @@
 /** @format */
 
 import React, { useState, useRef, useEffect } from 'react';
-import { ActivityIndicator, Text, Image, Dimensions } from 'react-native';
+import {
+  ActivityIndicator,
+  Text,
+  Image,
+  Dimensions,
+  Alert,
+} from 'react-native';
 import { Camera } from 'expo-camera';
 import styled from 'styled-components';
 import * as Permissions from 'expo-permissions';
@@ -10,7 +16,7 @@ import * as MediaLibrary from 'expo-media-library';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import SwitchCameraBtn from './Buttons/MainScreenBtns/SwitchCameraBtn';
-import TakePothoBtn from './Buttons/MainScreenBtns/TakePhotoBtn';
+import TakePhotoBtn from './Buttons/MainScreenBtns/TakePhotoBtn';
 import GetPhotoBtn from './Buttons/MainScreenBtns/GetPhotoBtn';
 import FaceLine from './Screen/FaceLine';
 import SaveBtn from './Buttons/MainScreenBtns/SaveShareCancel/SaveBtn';
@@ -158,6 +164,7 @@ export default function App() {
 
   const saveResultPhoto = async () => {
     try {
+      Alert.alert('저장완료❤', '갤러리에서 확인할 수 있습니다.');
       const base64Code = photos[1].split('data:image/png;base64,')[1];
 
       const filename = FileSystem.documentDirectory + 'changed.png';
@@ -235,7 +242,7 @@ export default function App() {
           !progressBar && (
             <IconContainer>
               <GetPhotoBtn onPress={getPhotos} />
-              <TakePothoBtn onPress={takePhoto} />
+              <TakePhotoBtn onPress={takePhoto} />
               <SwitchCameraBtn onPress={switchCameraType} />
             </IconContainer>
           )}
